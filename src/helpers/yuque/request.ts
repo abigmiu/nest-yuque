@@ -1,5 +1,6 @@
-import axios from 'axios';
-
+import { HttpException } from '@nestjs/common';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { IYuequeData } from 'src/models/yuque';
 const baseUrl = 'https://www.yuque.com/api/v2';
 
 const headers = {
@@ -13,12 +14,27 @@ const instance = axios.create({
     headers: headers,
 });
 
-instance.interceptors.request.use((config) => {});
+instance.interceptors.response.use((response: AxiosResponse<IYuequeData>) => {
+    const status = response.status;
+    if (status !== 200) {
+        throw new HttpException('服务器错误', status);
+    }
+    return response.data.data;
+});
 
-instance.get = (url: string, token: string, config) =>
-    instance.get(url, {
-        ...config,
-        headers: {
-            'X-Auth-Token': token,
-        },
-    });
+const transformInstance = {
+    get: (
+        token: string,
+        url: string,
+        config?: AxiosRequestConfig<any>,
+    ): Promise<any> => {
+        return instance.get(url, {
+            ...config,
+            headers: {
+                'X-Auth-Token': token,
+            },
+        });
+    },
+};
+
+export default transformInstance;
