@@ -1,15 +1,19 @@
 import {
     Controller,
-    Headers,
+    Param,
     Query,
     Get,
     Body,
     Post,
     Put,
+    UseGuards,
+    Request,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/guard/auth.guard';
 import { DocService } from './doc.service';
 
+@UseGuards(AuthGuard)
 @ApiTags('文档')
 @Controller('doc')
 export class DocController {
@@ -18,13 +22,24 @@ export class DocController {
     @ApiOperation({
         summary: '获取文档分页',
     })
-    @Get()
+    @Get('list')
     async getDocList(
-        @Headers('token') token: string,
+        @Request() req: Record<string, any>,
         @Query('page') page: string,
         @Query('size') size: string,
     ) {
-        return await this.docService.getDocs(token, +page, +size);
+        return await this.docService.getDocs(req.headers.token, +page, +size);
+    }
+
+    @ApiOperation({
+        summary: '获取文档详情',
+    })
+    @Get(':slug')
+    async getDocDetail(
+        @Request() req: Record<string, any>,
+        @Param('slug') slug: string,
+    ) {
+        return await this.docService.getDetail(req.headers.token, slug);
     }
 
     @ApiOperation({
@@ -32,10 +47,10 @@ export class DocController {
     })
     @Post()
     async createDoc(
-        @Headers('token') token: string,
+        @Request() req: Record<string, any>,
         @Body() body: Record<string, any>,
     ) {
-        return await this.docService.createDoc(token, body);
+        return await this.docService.createDoc(req.headers.token, body);
     }
 
     @ApiOperation({
@@ -43,9 +58,9 @@ export class DocController {
     })
     @Put()
     async updateDoc(
-        @Headers('token') token: string,
+        @Request() req: Record<string, any>,
         @Body() body: Record<string, any>,
     ) {
-        return await this.docService.updateDoc(token, body);
+        return await this.docService.updateDoc(req.headers.token, body);
     }
 }

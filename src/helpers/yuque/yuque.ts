@@ -15,6 +15,10 @@ export function getReposById(token: string, id: number): Promise<Array<IRepo>> {
     });
 }
 
+export function getRepoDetail(token: string, repoId: number) {
+    return http.get(token, `/repos/${repoId}`);
+}
+
 /** 根据repo-id获取文档列表 */
 export function getDocsById(
     token: string,
@@ -42,4 +46,8 @@ export function updateDoc(
     data: Record<string, any>,
 ) {
     return http.put(token, `/repos/${repoId}/docs`, data);
+}
+
+export function getDocDetail(token: string, repoId: number, slug: string) {
+    return http.get(token, `/repos/${repoId}/docs/${slug}`);
 }
