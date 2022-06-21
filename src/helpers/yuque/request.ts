@@ -35,6 +35,32 @@ const transformInstance = {
             },
         });
     },
+    post: (
+        token: string,
+        url: string,
+        data: any,
+        config?: AxiosRequestConfig<any>,
+    ): Promise<any> => {
+        return instance.post(url, data, {
+            ...config,
+            headers: {
+                'X-Auth-Token': token,
+            },
+        });
+    },
+    put: (
+        token: string,
+        url: string,
+        data: any,
+        config?: AxiosRequestConfig<any>,
+    ): Promise<any> => {
+        return instance.put(url, data, {
+            ...config,
+            headers: {
+                'X-Auth-Token': token,
+            },
+        });
+    },
 };
 
 export default transformInstance;
