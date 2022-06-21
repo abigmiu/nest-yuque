@@ -1,13 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AppRedisService } from 'src/redis/redis.service';
-import {
-    getUser,
-    getReposById,
-    getDocsById,
-    createDoc,
-} from 'src/helpers/yuque/yuque';
-import type { IMiu, IRepo } from 'src/models/yuque';
-import type { IReposRes } from 'src/models/repos';
+import { getUser } from 'src/helpers/yuque/yuque';
 
 @Injectable()
 export class UserService {

@@ -1,12 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AppRedisService } from 'src/redis/redis.service';
-import {
-    getUser,
-    getReposById,
-    getDocsById,
-    createDoc,
-} from 'src/helpers/yuque/yuque';
-import type { IMiu, IRepo } from 'src/models/yuque';
+import { getReposById } from 'src/helpers/yuque/yuque';
+import type { IMiu } from 'src/models/yuque';
 import type { IReposRes } from 'src/models/repos';
 
 @Injectable()

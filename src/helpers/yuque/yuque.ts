@@ -35,6 +35,7 @@ export function createDoc(
     return http.post(token, `/repos/${repoId}/docs`, data);
 }
 
+/** 更新文档 */
 export function updateDoc(
     token: string,
     repoId: number,

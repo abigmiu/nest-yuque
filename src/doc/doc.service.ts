@@ -1,13 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AppRedisService } from 'src/redis/redis.service';
-import {
-    getUser,
-    getReposById,
-    getDocsById,
-    createDoc,
-} from 'src/helpers/yuque/yuque';
-import type { IMiu, IRepo } from 'src/models/yuque';
-import type { IReposRes } from 'src/models/repos';
+import { getDocsById, createDoc, updateDoc } from 'src/helpers/yuque/yuque';
+import type { IMiu } from 'src/models/yuque';
 
 @Injectable()
 export class DocService {
@@ -29,5 +23,12 @@ export class DocService {
         const miuInfo: IMiu = await this.appRedisService.get(token);
         const { repoId } = miuInfo;
         return await createDoc(token, repoId, data);
+    }
+
+    /** 更新文档 */
+    async updateDoc(token: string, data: Record<string, any>) {
+        const miuInfo: IMiu = await this.appRedisService.get(token);
+        const { repoId } = miuInfo;
+        return await updateDoc(token, repoId, data);
     }
 }
