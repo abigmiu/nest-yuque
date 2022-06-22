@@ -1,6 +1,7 @@
 import {
     Controller,
     Get,
+    Res,
     Headers,
     Post,
     Param,
@@ -8,6 +9,7 @@ import {
     Request,
     SetMetadata,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guard/auth.guard';
 import { RepoService } from './repo.service';
@@ -34,8 +36,14 @@ export class RepoController {
     @Post(':repoId')
     async bindRepo(
         @Request() req: Record<string, any>,
-        @Param('repoId') repoId?: string,
+        @Param('repoId') repoId: string,
+        @Res({ passthrough: true }) response: Response,
     ) {
-        return await this.repoService.bindRepo(req.headers.token, +repoId);
+        const res = await this.repoService.bindRepo(req.headers.token, +repoId);
+        response.cookie('bindRepo', true, {
+            httpOnly: true,
+            maxAge: 2147483647,
+        });
+        return res;
     }
 }

@@ -7,7 +7,10 @@ export class UserService {
     constructor(private appRedisService: AppRedisService) {}
 
     async setUser(token: string) {
+        console.log('fetchUser');
+
         const userInfo = await getUser(token);
+
         const { id, name, avatar_url } = userInfo;
         const res = await this.appRedisService.set(token, {
             userId: id,
