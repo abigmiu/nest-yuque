@@ -2,14 +2,13 @@ import {
     Controller,
     Get,
     Res,
-    Headers,
+    Request,
     Post,
     Param,
     UseGuards,
-    Request,
     SetMetadata,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Response, Request as ERequest } from 'express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guard/auth.guard';
 import { RepoService } from './repo.service';
@@ -23,9 +22,11 @@ export class RepoController {
     @ApiOperation({
         summary: '获取知识库列表',
     })
+    @SetMetadata('noRepoId', true)
     @Get('list')
-    async getRepoList(@Request() req: Record<string, any>) {
-        const data = await this.repoService.getRepos(req.headers.token);
+    async getRepoList(@Request() req: ERequest) {
+        const { token } = req.cookies;
+        const data = await this.repoService.getRepos(token);
         return data;
     }
 

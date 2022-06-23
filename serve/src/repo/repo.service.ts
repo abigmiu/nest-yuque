@@ -11,6 +11,8 @@ export class RepoService {
     /** 获取 所有知识库 */
     async getRepos(token: string) {
         const miuInfo: IMiu = await this.appRedisService.get(token);
+        console.log(miuInfo);
+
         const { userId } = miuInfo;
         const repos = await getReposById(token, userId);
         const list: Array<IReposRes> = [];

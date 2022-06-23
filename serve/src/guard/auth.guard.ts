@@ -40,6 +40,7 @@ export class AuthGuard implements CanActivate {
                 throw new HttpException('未绑定知识库', 405);
             }
         }
+
         return true;
     }
 }
