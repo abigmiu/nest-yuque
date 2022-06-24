@@ -1,11 +1,19 @@
-import axios from 'axios'
+import axios, { type AxiosRequestConfig } from 'axios'
 
 const instance = axios.create({
-    baseURL: '/api',
-})
-instance.interceptors.request.use((config) => {
-    console.log(config)
-    return config
+    baseURL: '/api'
 })
 
-export default instance
+instance.interceptors.response.use((response) => {
+    return response.data
+})
+
+class Request {
+    get<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
+        return instance.get(url, config)
+    }
+    post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+        return instance.post(url, data, config)
+    }
+}
+export default new Request()

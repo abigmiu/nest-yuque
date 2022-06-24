@@ -1,6 +1,9 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <RouterView />
+    <n-message-provider>
+        <n-dialog-provider>
+            <RouterView />
+        </n-dialog-provider>
+    </n-message-provider>
 </template>

@@ -36,11 +36,12 @@ export class RepoController {
     @SetMetadata('noRepoId', true)
     @Post(':repoId')
     async bindRepo(
-        @Request() req: Record<string, any>,
+        @Request() req: ERequest,
         @Param('repoId') repoId: string,
         @Res({ passthrough: true }) response: Response,
     ) {
-        const res = await this.repoService.bindRepo(req.headers.token, +repoId);
+        const { token } = req.cookies;
+        const res = await this.repoService.bindRepo(token, +repoId);
         response.cookie('bindRepo', true, {
             httpOnly: true,
             maxAge: 2147483647,

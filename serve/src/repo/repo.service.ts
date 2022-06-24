@@ -29,8 +29,11 @@ export class RepoService {
 
     async getRepoDetail(token: string, repoId: number) {
         try {
+            console.log(token, repoId);
+
             await getRepoDetail(token, repoId);
-        } catch {
+        } catch (e) {
+            console.log(e);
             throw new HttpException('无法绑定该知识库', 500);
         }
     }
