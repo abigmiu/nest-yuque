@@ -21,6 +21,8 @@ const onSelected = async (bookName: string, bookId: number) => {
         content: `确定选择 ${bookName} 吗？确定后不可更改`,
         positiveText: '确定',
         negativeText: '放弃',
+        maskClosable: false,
+        closable: false,
         onPositiveClick: async () => {
             d.loading = true
             try {

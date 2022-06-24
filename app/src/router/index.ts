@@ -12,6 +12,16 @@ const router = createRouter({
           path: '/second-setup',
           name: 'SecondSetup',
           component: () => import('@/views/SecondSetup.vue'),
+      },
+      {
+          path: '/list',
+          name: 'List',
+          component: () => import('@/views/DocList.vue'),
+      },
+      {
+          path: '/new-doc',
+          name: 'NewDoc',
+          component: () => import('@/views/NewDoc.vue'),
       }
   ]
 })

@@ -9,6 +9,7 @@ import {
     UseGuards,
     Request,
 } from '@nestjs/common';
+import { Request as ERequest } from 'express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guard/auth.guard';
 import { DocService } from './doc.service';
@@ -24,22 +25,21 @@ export class DocController {
     })
     @Get('list')
     async getDocList(
-        @Request() req: Record<string, any>,
+        @Request() req: ERequest,
         @Query('page') page: string,
         @Query('size') size: string,
     ) {
-        return await this.docService.getDocs(req.headers.token, +page, +size);
+        const { token } = req.cookies;
+        return await this.docService.getDocs(token, +page, +size);
     }
 
     @ApiOperation({
         summary: '获取文档详情',
     })
     @Get(':slug')
-    async getDocDetail(
-        @Request() req: Record<string, any>,
-        @Param('slug') slug: string,
-    ) {
-        return await this.docService.getDetail(req.headers.token, slug);
+    async getDocDetail(@Request() req: ERequest, @Param('slug') slug: string) {
+        const { token } = req.cookies;
+        return await this.docService.getDetail(token, slug);
     }
 
     @ApiOperation({
@@ -47,10 +47,15 @@ export class DocController {
     })
     @Post()
     async createDoc(
-        @Request() req: Record<string, any>,
+        @Request() req: ERequest,
         @Body() body: Record<string, any>,
     ) {
-        return await this.docService.createDoc(req.headers.token, body);
+        const { token } = req.cookies;
+        return await this.docService.createDoc(token, {
+            title: body.title,
+            body: body.content,
+            format: 'html',
+        });
     }
 
     @ApiOperation({
@@ -58,9 +63,10 @@ export class DocController {
     })
     @Put()
     async updateDoc(
-        @Request() req: Record<string, any>,
+        @Request() req: ERequest,
         @Body() body: Record<string, any>,
     ) {
-        return await this.docService.updateDoc(req.headers.token, body);
+        const { token } = req.cookies;
+        return await this.docService.updateDoc(token, body);
     }
 }
