@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { AppRedisService } from 'src/redis/redis.service';
 import { getReposById, getRepoDetail } from 'src/helpers/yuque/yuque';
 import type { IMiu } from 'src/models/yuque';
@@ -40,13 +40,23 @@ export class RepoService {
 
     /** 给用户绑定知识库 */
     async bindRepo(token: string, repoId: number) {
-        await this.getRepoDetail(token, repoId);
         const miuInfo: IMiu = await this.appRedisService.get(token);
+        if (miuInfo.repoId) {
+            throw new HttpException('已绑定知识库', HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            await this.getRepoDetail(token, repoId);
+        } catch {
+            throw new HttpException('无法获取知识库详情', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         const newInfo = {
             ...miuInfo,
             repoId,
         };
+
         await this.appRedisService.set(token, newInfo);
-        return 'success';
+        return 'ok';
     }
 }

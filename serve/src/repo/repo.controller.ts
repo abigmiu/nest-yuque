@@ -1,13 +1,4 @@
-import {
-    Controller,
-    Get,
-    Res,
-    Request,
-    Post,
-    Param,
-    UseGuards,
-    SetMetadata,
-} from '@nestjs/common';
+import { Controller, Get, Res, Request, Post, Param, UseGuards, SetMetadata } from '@nestjs/common';
 import { Response, Request as ERequest } from 'express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guard/auth.guard';

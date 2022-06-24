@@ -20,31 +20,19 @@ export function getRepoDetail(token: string, repoId: number) {
 }
 
 /** 根据repo-id获取文档列表 */
-export function getDocsById(
-    token: string,
-    id: number,
-    query: Record<string, number>,
-) {
+export function getDocsById(token: string, id: number, query: Record<string, number>) {
     return http.get(token, `/repos/${id}/docs`, {
         params: query,
     });
 }
 
 /** 创建文档 */
-export function createDoc(
-    token: string,
-    repoId: number,
-    data: Record<string, any>,
-) {
+export function createDoc(token: string, repoId: number, data: Record<string, any>) {
     return http.post(token, `/repos/${repoId}/docs`, data);
 }
 
 /** 更新文档 */
-export function updateDoc(
-    token: string,
-    repoId: number,
-    data: Record<string, any>,
-) {
+export function updateDoc(token: string, repoId: number, data: Record<string, any>) {
     return http.put(token, `/repos/${repoId}/docs`, data);
 }
 

@@ -12,10 +12,7 @@ import { AppRedisService } from 'src/redis/redis.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    constructor(
-        private appRedisService: AppRedisService,
-        private reflector: Reflector,
-    ) {}
+    constructor(private appRedisService: AppRedisService, private reflector: Reflector) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const request = context.switchToHttp().getRequest<Request>();
@@ -30,10 +27,7 @@ export class AuthGuard implements CanActivate {
             throw new HttpException('无此用户', HttpStatus.UNAUTHORIZED);
         }
 
-        const notNeedRepoId = this.reflector.get<boolean>(
-            'noRepoId',
-            context.getHandler(),
-        );
+        const notNeedRepoId = this.reflector.get<boolean>('noRepoId', context.getHandler());
         if (!notNeedRepoId) {
             const { repoId } = miuInfo;
             if (!repoId) {

@@ -4,7 +4,7 @@ export interface IYuequeData<T = any> {
 
 export interface IMiu {
     userId: number;
-    repoId: number;
+    repoId?: number;
 }
 
 export interface IUser {

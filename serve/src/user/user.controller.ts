@@ -12,10 +12,7 @@ export class UserController {
         summary: '绑定用户',
     })
     @Post(':token')
-    async setUser(
-        @Param('token') token: string,
-        @Res({ passthrough: true }) response: Response,
-    ) {
+    async setUser(@Param('token') token: string, @Res({ passthrough: true }) response: Response) {
         const res = await this.userService.setUser(token);
         response.cookie('token', token, {
             httpOnly: true,

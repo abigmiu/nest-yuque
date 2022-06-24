@@ -1,14 +1,4 @@
-import {
-    Controller,
-    Param,
-    Query,
-    Get,
-    Body,
-    Post,
-    Put,
-    UseGuards,
-    Request,
-} from '@nestjs/common';
+import { Controller, Param, Query, Get, Body, Post, Put, UseGuards, Request } from '@nestjs/common';
 import { Request as ERequest } from 'express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guard/auth.guard';
@@ -46,10 +36,7 @@ export class DocController {
         summary: '提交文档',
     })
     @Post()
-    async createDoc(
-        @Request() req: ERequest,
-        @Body() body: Record<string, any>,
-    ) {
+    async createDoc(@Request() req: ERequest, @Body() body: Record<string, any>) {
         const { token } = req.cookies;
         return await this.docService.createDoc(token, {
             title: body.title,
@@ -62,11 +49,12 @@ export class DocController {
         summary: '更新文档',
     })
     @Put()
-    async updateDoc(
-        @Request() req: ERequest,
-        @Body() body: Record<string, any>,
-    ) {
+    async updateDoc(@Request() req: ERequest, @Body() body: Record<string, any>) {
         const { token } = req.cookies;
-        return await this.docService.updateDoc(token, body);
+        return await this.docService.updateDoc(token, {
+            title: body.title,
+            body: body.content,
+            format: 'html',
+        });
     }
 }

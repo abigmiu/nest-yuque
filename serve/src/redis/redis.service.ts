@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { RedisService } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
 
@@ -19,7 +19,11 @@ export class AppRedisService {
         if (!this.client) {
             await this.getClient();
         }
-        return await this.client.set(`yuque-id-${key}`, value);
+        try {
+            return await this.client.set(`yuque-id-${key}`, value);
+        } catch {
+            throw new HttpException('redis 写入失败', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     async get(key: string) {
