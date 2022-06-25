@@ -26,7 +26,7 @@ export class DocController {
     @ApiOperation({
         summary: '获取文档详情',
     })
-    @Get(':slug')
+    @Get('detail/:slug')
     async getDocDetail(@Request() req: ERequest, @Param('slug') slug: string) {
         const { token } = req.cookies;
         return await this.docService.getDetail(token, slug);
@@ -48,7 +48,7 @@ export class DocController {
     @ApiOperation({
         summary: '更新文档',
     })
-    @Put()
+    @Put(':id')
     async updateDoc(@Request() req: ERequest, @Body() body: Record<string, any>) {
         const { token } = req.cookies;
         return await this.docService.updateDoc(token, {
