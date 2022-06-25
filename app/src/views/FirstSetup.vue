@@ -7,8 +7,8 @@ const loading = ref(false)
 const onBind = async () => {
     try {
         loading.value = true
-        const res = await $fetch.post(`/user/${inputToken.value}`)
-        console.log(res)
+        await $fetch.post(`/user/${inputToken.value}`)
+        localStorage.setItem('token', 'true')
     } finally {
         loading.value = false
     }
@@ -31,8 +31,5 @@ const onBind = async () => {
 <style lang="scss" scoped>
 .first-setup-wrapper {
     height: 100vh;
-    width: 450px;
-    max-width: 70%;
-    margin: 0 auto;
 }
 </style>

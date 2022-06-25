@@ -5,7 +5,7 @@ const instance = axios.create({
 })
 
 instance.interceptors.response.use((response) => {
-    return response.data
+    return response.data.data
 })
 
 class Request {

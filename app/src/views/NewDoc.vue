@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useMessage } from 'naive-ui'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
 import $fetch from '../api/http'
 import Quill from 'quill'
 import 'quill/dist/quill.core.css'
@@ -13,7 +16,7 @@ const submitData = async () => {
     if (!title.value) {
         return message.error('未填写标题')
     }
-    const html = quillInstance.value.root.innerHTML
+    const html = quillInstance.value!.root.innerHTML
     if (html.length < 20) {
         return message.error('你再写一点内容吧')
     }
@@ -24,6 +27,9 @@ const submitData = async () => {
             content: html,
         })
         message.success('发布成功')
+        router.replace({
+            name: 'List',
+        })
     } finally {
         loading.value = false
     }
@@ -56,7 +62,7 @@ const title = ref('')
             :maxlength="20"
         ></n-input>
         <div id="editor"></div>
-        <div class="fixed rounded-full bottom-10 right-10" draggable="true">
+        <div class="fixed rounded-full bottom-10 left-10" draggable="true">
             <n-button type="primary" :loading="loading" @click="submitData">
                 发布
             </n-button>
@@ -67,6 +73,6 @@ const title = ref('')
 <style lang="scss" scoped>
 #editor {
     background-color: #fff;
-    height: 100vh;
+    min-height: 100vh;
 }
 </style>

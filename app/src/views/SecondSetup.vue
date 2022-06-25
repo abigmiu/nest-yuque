@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useDialog, useMessage } from 'naive-ui'
 import $fetch from '../api/http'
 
+const router = useRouter()
 interface IData {
     name: string
 }
@@ -27,7 +29,11 @@ const onSelected = async (bookName: string, bookId: number) => {
             d.loading = true
             try {
                 await $fetch.post(`/repo/${bookId}`)
+                localStorage.setItem('isBindRepo', JSON.stringify(true))
                 message.success('绑定成功')
+                router.replace({
+                    name: 'List',
+                })
             } catch {
                 d.loading = false
             }
@@ -42,6 +48,7 @@ onMounted(() => {
 
 <template>
     <div class="second-setup-wrapper">
+        <n-alert title="选择知识库" type="info" class="mb-10"></n-alert>
         <n-space vertical>
             <n-card
                 v-for="item in listData"

@@ -22,6 +22,11 @@ const router = createRouter({
           path: '/new-doc',
           name: 'NewDoc',
           component: () => import('@/views/NewDoc.vue'),
+      },
+      {
+          path: '/detail/:slug',
+          name: 'Detail',
+          component: () => import('@/views/DocDetail.vue'),
       }
   ]
 })
